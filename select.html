@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+		<head>
+				<meta charset="utf-8">
+				<style>
+				ul{list-style:none;}
+				select,ul{float: left;}
+				</style>
+		</head>
+		<body>
+		<select id="prov">
+			<option>请选择</option>
+			<option>江苏省</option>
+			<option>四川省</option>
+			<option>安徽省</option>
+		</select>
+		<ul id="city"></ul>
+		<script>
+		//1.先获取id为 prov 的 selsct
+		var prov = document.getElementById('prov');
+		//2.绑定事件 到 prov 上
+		prov.onchange = function(){
+			//1.ajax
+			var xhr = new XMLHttpRequest();
+			xhr.open('get','select.php');
+			xhr.send(null);
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState==4 && xhr.status==200) {
+					//1.获取json数据 保存在json里
+					var json = xhr.responseText;
+					//2、将json字符串转化为js对象 保存在data中
+					var data = JSON.parse(json);
+					//3.创建一个空的字符串 str
+					var str = "";
+					//4.遍历 data对象 for key in 
+					for(key in data){
+						//peov.value 是当前的option的值
+						if (prov.value == key) {
+							//遍历 当前对象 key 对应的数组
+							for (var i=0;i<data[key].length;i++) {
+								//拼接li
+								str+='<li>'+data[key][i]+'</li>';
+								}		
+								document.getElementById('city').innerHTML = str;}			
+				}
+			}
+		}
+	}	
+		</script>
+		</body>
+</html>
